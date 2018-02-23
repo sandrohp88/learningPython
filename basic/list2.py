@@ -31,8 +31,7 @@ def linear_merge(list1, list2):
     # +++your code here+++
     # This does not work in lineal time, but it's short 
     list1.extend(list2)
-    list1.sort()
-    return list1
+    return sorted(list1)
 
 # Note: the solution above is kind of cute, but unforunately list.pop(0)
 # is not constant time with the standard python list implementation, so
