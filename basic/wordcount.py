@@ -56,32 +56,18 @@ def readFile(filename):
             if word in word_count:
                 word_count[word] = word_count[word] + 1
             else:
-                word_count[word] = 1
+                word_count[word] =  1
     input_file.close()
-
+    word_count
     return word_count
 
 
 def print_words(filename):
-    word_dic = readFile(filename)
-    wordsKeys = sorted(word_dic.keys())
-
-    for iKeys in wordsKeys:
-        print(iKeys, word_dic[iKeys])
-
+    print(readFile(filename))
 # Then print_words() and print_top() can just call the utility function.
-
-def second_tuple_value(the_tuple):
-    return the_tuple[1]
-
 def print_top(filename):
-    word_dic = readFile(filename)
-    items_tuple = sorted(word_dic.items(),key=second_tuple_value,reverse=True)
-    for item in items_tuple[:20]:
-        print(item)
-    
+    return
 ###
-
 # This basic command line argument parsing code is provided and
 # calls the print_words() and print_top() functions which you must define.
 
@@ -91,9 +77,9 @@ def main():
     #   print('usage: ./wordcount.py {--count | --topcount} file')
     #   sys.exit(1)
 
-    option = '--topcount'
+    option = '--count'
     base_path = os.path.dirname(__file__)
-    filename = os.path.join(base_path, 'small.txt')
+    filename = os.path.join(base_path, 'alice.txt')
     print(filename)
     if option == '--count':
         print_words(filename)

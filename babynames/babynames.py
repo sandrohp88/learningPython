@@ -8,6 +8,7 @@
 
 import sys
 import re
+import os
 
 """Baby Names exercise
 
@@ -34,35 +35,82 @@ Suggested milestones for incremental development:
  -Fix main() to use the extract_names list
 """
 
+
+def extract_year(string_year):
+    year = re.search(r'(in\s)+(\d\d\d\d)', string_year)
+    if year:
+        return year.group(2)
+    else:
+        sys.stderr.write('Couldn\'t find the year!\n')
+        sys.exit(1)
+
+
+def extract_names_rank(string_names_rank):
+    names_rank = re.findall(
+        r'<td>(\d+)</td><td>(\w*)</td><td>(\w*)</td>', string_names_rank)
+    if names_rank:
+        return names_rank
+    else:
+        sys.stderr.write('Couldn\'t find names and ranks!\n')
+        sys.exit(1)
+
+
 def extract_names(filename):
-  """
-  Given a file name for baby.html, returns a list starting with the year string
-  followed by the name-rank strings in alphabetical order.
-  ['2006', 'Aaliyah 91', Aaron 57', 'Abagail 895', ' ...]
-  """
-  # +++your code here+++
-  return
+    """
+    Given a file name for baby.html, returns a list starting with the year string
+    followed by the name-rank strings in alphabetical order.
+    ['2006', 'Aaliyah 91', Aaron 57', 'Abagail 895', ' ...]
+    """
+    # +++your code here+++
+    f = open(filename, 'r')
+    all_text =f.read()
+    baby_names_dict = {}
+    year = extract_year(all_text)
+    #[year, Name rank, Name rank...]
+    result_list = []
+    result_list.append(year)
+
+    # Create dict with key = names and value = rank
+    baby_names = extract_names_rank(all_text)
+
+    for baby_tuple in baby_names:
+        (rank, boy, girl) = baby_tuple
+        if boy not in baby_names_dict:
+            baby_names_dict[boy] = rank
+        if girl not in baby_names_dict:
+            baby_names_dict[girl] = rank
+    
+    sorted_baby_names = sorted(baby_names_dict.keys())
+
+    for name in sorted_baby_names:
+        result_list.append(name + ' ' + baby_names_dict[name])
+    print(result_list)
+    return
 
 
 def main():
-  # This command-line parsing code is provided.
-  # Make a list of command line arguments, omitting the [0] element
-  # which is the script itself.
-  args = sys.argv[1:]
 
-  if not args:
-    print 'usage: [--summaryfile] file [file ...]'
-    sys.exit(1)
+    # This command-line parsing code is provided.
+    # Make a list of command line arguments, omitting the [0] element
+    # which is the script itself.
+    # args = sys.argv[1:]
 
-  # Notice the summary flag and remove it from args if it is present.
-  summary = False
-  if args[0] == '--summaryfile':
-    summary = True
-    del args[0]
+    # if not args:
+    #   print('usage: [--summaryfile] file [file ...]')
+    #   sys.exit(1)
 
-  # +++your code here+++
-  # For each filename, get the names, then either print the text output
-  # or write it to a summary file
-  
+    # # Notice the summary flag and remove it from args if it is present.
+    # summary = False
+    # if args[0] == '--summaryfile':
+    #   summary = True
+    #   del args[0]
+    base_path = os.path.dirname(__file__)
+    filename = os.path.join(base_path, 'baby1992.html')
+    extract_names(filename)
+    # +++your code here+++
+    # For each filename, get the names, then either print the text output
+    # or write it to a summary file
+
+
 if __name__ == '__main__':
-  main()
+    main()
